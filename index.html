@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+        <meta charset="utf-8">
+	<script type="text/javascript">
+        
+        function WebSocketTest() {
+            var messageContainer = document.getElementById("messages");
+            if ("WebSocket" in window) {
+                console.log('not quite fucke dup.');
+                messageContainer.innerHTML = "WebSocket is supported by your Browser!";
+
+                var ws = new WebSocket("ws://localhost:8888/handler?Id=123456789");
+                console.log('well now were here');
+                ws.onopen = function() {
+                    console.log('open sesame');
+                    ws.send("Message to send");
+                };
+                ws.onmessage = function (evt) { 
+                    var received_msg = evt.data;
+                    messageContainer.innerHTML = "Message is received...";
+                };
+                ws.onclose = function() { 
+                    messageContainer.innerHTML = "Connection is closed...";
+                };
+            } else {
+                console.log('you fucked up.');
+                messageContainer.innerHTML = "WebSocket NOT supported by your Browser!";
+            }
+        }
+        </script>
+    </head>
+    <body>
+        <a href="javascript:WebSocketTest()">Run WebSocket</a>
+        <div id="messages" style="height:200px;background:black;color:white;"></div>
+    </body>
+</html>
